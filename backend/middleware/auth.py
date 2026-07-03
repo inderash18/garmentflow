@@ -54,10 +54,14 @@ async def get_current_user(
         )
     
     db = get_db()
+    user_doc = None
     try:
         user_doc = await db.users.find_one({"_id": ObjectId(user_id)})
     except Exception:
-        user_doc = None
+        pass
+    
+    if not user_doc:
+        user_doc = await db.users.find_one({"_id": user_id})
 
     if not user_doc:
         raise HTTPException(

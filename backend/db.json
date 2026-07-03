@@ -1,0 +1,53 @@
+{
+  "users": [
+    {
+      "name": "Admin User",
+      "email": "admin@garmentflow.com",
+      "password_hash": "$2b$12$2aNIFBNnnDLeHK.9UrO7U.ODaDPPpUjnUHyGvD9J7EgoEdAClZaUy",
+      "role": "ADMIN",
+      "department": null,
+      "phone": "9999999999",
+      "_id": "39c2a542-d957-41e9-a7a1-375836d3aea0"
+    },
+    {
+      "name": "Test Worker",
+      "email": "worker_test@garmentflow.com",
+      "password_hash": "$2b$12$zukIe2iKcKHJ2tpWf14.UeGsHpyTdUE.cLo/iDhExpFAetvRuXfBi",
+      "role": "WORKER",
+      "department": "Stitching",
+      "phone": "9876543210",
+      "_id": "a3bb9f51-70ab-433a-87f9-6f89b65611ba"
+    }
+  ],
+  "departments": [
+    {
+      "name": "Cutting",
+      "_id": "bd0679c5-702e-4897-b80f-cb2f4c302f23"
+    },
+    {
+      "name": "Stitching",
+      "_id": "79c4c290-9ed0-4c7c-80f9-8475d6c83688"
+    },
+    {
+      "name": "Printing",
+      "_id": "495ffb13-ac9c-463a-b512-ad8db243f927"
+    },
+    {
+      "name": "Embroidery",
+      "_id": "1429dda8-0df6-4075-8eb7-f31e4d5c5594"
+    },
+    {
+      "name": "Packing",
+      "_id": "a9805770-71ac-460b-915b-623772b866f9"
+    },
+    {
+      "name": "Quality Check",
+      "_id": "e0dd833a-52e9-4206-882a-d15e258d3775"
+    },
+    {
+      "name": "Finishing",
+      "_id": "0c5d6fa9-5f44-4f65-adca-3ab534c530c2"
+    }
+  ],
+  "tasks": []
+}

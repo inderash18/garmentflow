@@ -43,12 +43,7 @@ async def list_tasks(db=Depends(get_db), current_user=Depends(get_current_user))
 
 @router.get("/{task_id}", response_model=TaskResponse)
 async def get_task(task_id: str, db=Depends(get_db), current_user=Depends(get_current_user)):
-    try:
-        oid = ObjectId(task_id)
-    except Exception:
-        raise HTTPException(status_code=400, detail="Invalid task ID format")
-    
-    task = await db.tasks.find_one({"_id": oid})
+    task = await db.tasks.find_one({"_id": task_id})
     if not task:
         raise HTTPException(status_code=404, detail="Task not found")
     
@@ -114,12 +109,7 @@ async def update_task(
     db=Depends(get_db),
     admin=Depends(require_admin)
 ):
-    try:
-        oid = ObjectId(task_id)
-    except Exception:
-        raise HTTPException(status_code=400, detail="Invalid task ID format")
-    
-    task = await db.tasks.find_one({"_id": oid})
+    task = await db.tasks.find_one({"_id": task_id})
     if not task:
         raise HTTPException(status_code=404, detail="Task not found")
     
@@ -153,9 +143,9 @@ async def update_task(
         
     if update_fields:
         update_fields["updatedAt"] = datetime.now(timezone.utc)
-        await db.tasks.update_one({"_id": oid}, {"$set": update_fields})
+        await db.tasks.update_one({"_id": task_id}, {"$set": update_fields})
         
-    updated_task = await db.tasks.find_one({"_id": oid})
+    updated_task = await db.tasks.find_one({"_id": task_id})
     return _doc_to_response(updated_task)
 
 @router.put("/{task_id}/status", response_model=TaskResponse)
@@ -165,12 +155,7 @@ async def update_task_status(
     db=Depends(get_db),
     current_user=Depends(get_current_user)
 ):
-    try:
-        oid = ObjectId(task_id)
-    except Exception:
-        raise HTTPException(status_code=400, detail="Invalid task ID format")
-    
-    task = await db.tasks.find_one({"_id": oid})
+    task = await db.tasks.find_one({"_id": task_id})
     if not task:
         raise HTTPException(status_code=404, detail="Task not found")
     
@@ -190,19 +175,14 @@ async def update_task_status(
         update_data["workerId"] = str(current_user["_id"])
         update_data["workerName"] = current_user["name"]
     
-    await db.tasks.update_one({"_id": oid}, {"$set": update_data})
+    await db.tasks.update_one({"_id": task_id}, {"$set": update_data})
     
-    updated_task = await db.tasks.find_one({"_id": oid})
+    updated_task = await db.tasks.find_one({"_id": task_id})
     return _doc_to_response(updated_task)
 
 @router.delete("/{task_id}")
 async def delete_task(task_id: str, db=Depends(get_db), admin=Depends(require_admin)):
-    try:
-        oid = ObjectId(task_id)
-    except Exception:
-        raise HTTPException(status_code=400, detail="Invalid task ID format")
-    
-    result = await db.tasks.delete_one({"_id": oid})
+    result = await db.tasks.delete_one({"_id": task_id})
     if result.deleted_count == 0:
         raise HTTPException(status_code=404, detail="Task not found")
     
