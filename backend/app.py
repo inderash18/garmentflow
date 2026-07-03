@@ -68,6 +68,26 @@ async def startup_event():
             await db.departments.insert_one({"name": dept_name})
         logger.info(f"Seeded {len(default_depts)} departments.")
 
+    # Seed default workers if not exists
+    workers_to_seed = [
+        {"name": "Ravi Kumar",   "email": "ravi@garmentflow.com",   "password": "Worker@1234", "department": "Cutting", "phone": "9876543210"},
+        {"name": "Priya Sharma", "email": "priya@garmentflow.com",  "password": "Worker@1234", "department": "Stitching", "phone": "9876543211"},
+        {"name": "Arjun Patel",  "email": "arjun@garmentflow.com",  "password": "Worker@1234", "department": "Quality Check", "phone": "9876543212"},
+    ]
+    for w in workers_to_seed:
+        existing_worker = await db.users.find_one({"email": w["email"]})
+        if not existing_worker:
+            logger.info(f"Seeding default worker {w['email']}...")
+            await db.users.insert_one({
+                "name": w["name"],
+                "email": w["email"],
+                "password_hash": hash_password(w["password"]),
+                "role": "WORKER",
+                "department": w["department"],
+                "phone": w["phone"]
+            })
+            logger.info(f"Worker seeded: {w['email']}")
+
 @app.on_event("shutdown")
 async def shutdown_event():
     await disconnect_db()
